@@ -1,0 +1,1 @@
+import coalesce_api.strategies.average_strategy

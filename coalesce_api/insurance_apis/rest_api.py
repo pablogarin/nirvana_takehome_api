@@ -7,22 +7,29 @@ from coalesce_api.insurance_apis.invalid_response_error import InvalidResponseEr
 
 
 @register_type
-class RestAPI(APIInterface):
+class RestAPIClient(APIInterface):
     allowed_methods = { 'GET', 'POST', 'PUT', 'DELETE' }
-    def __init__(self, base_url):
-        self.base_url = base_url
+    def __init__(self, url):
+        self.url = url
 
-    def fetch_from_api(self, path='/', method='GET', **kwargs):
+    def fetch_from_api(self, url: str = None, method: str = 'GET', **kwargs):
         if method not in self.allowed_methods:
             raise InvalidMethodError(path, method)
-        url = f'{self.base_url}{path}'
-        print(url)
+        if not url:
+          url = self.url
         response = requests.request(method, url, **kwargs)
         if response.status_code >= 400:
-            raise InvalidResponseError(path, response.status_code)
+            raise InvalidResponseError(url, response.status_code)
         response_data = response.json()
         return response_data
     
+    def get_insurance_data(self, id_: int):
+      if not id_:
+        raise ValueError('You must provide a valid member id')
+      url = f'{self.url}?member_id={id_}'
+      data = self.fetch_from_api(url=url)
+      return data
+    
     @classmethod
     def get_type(cls):
-        return 'REST', cls
+      return 'REST', cls

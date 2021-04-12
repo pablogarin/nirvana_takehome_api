@@ -13,9 +13,10 @@ def register_type(interface: APIInterface):
       raise DuplicateInterfaceError()
     return
   api_types[type_] = cl
+  return cl
 
 class APIFactory(object):
-  def create_api(self, url=None: str, type_:str = 'REST', *args, **kwargs) -> APIInterface:
+  def create_api(self, url: str = None, type_:str = 'REST', *args, **kwargs) -> APIInterface:
     if not url:
       raise InvalidURLError()
     if type_ not in api_types:
