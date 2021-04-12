@@ -1,0 +1,2 @@
+class DuplicateInterfaceError(Exception):
+  pass
