@@ -10,11 +10,12 @@ from coalesce_api.strategies.context_handler import ContextHandler
 load_dotenv()
 
 
-def main(**kwargs):
+def main(*args, **kwargs):
   try:
-    ctx = ContextHandler(kwargs["strategy"])
+    strategy = get_config("STRATEGY")
+    ctx = ContextHandler(strategy)
     app = create_flask_app(ctx=ctx)
-    app.run()
+    return app
   except Exception as e:
     print(e.to_json())
     
@@ -28,7 +29,6 @@ def get_config(name):
 
 if __name__ == "__main__":
   try:
-    strategy = get_config("STRATEGY")
     main(strategy=strategy)
   except ValueError as e:
     print(e)
