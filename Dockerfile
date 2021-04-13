@@ -6,4 +6,4 @@ COPY . ./
 
 RUN python -m pip install -r requirements.txt
 
-CMD ["gunicorn", "-w1", "-b0.0.0.0:5000", "main:main"]
+CMD ["gunicorn", "-w1", "-b0.0.0.0:5000", "--timeout", "30", "wsgi:app"]
