@@ -14,7 +14,7 @@ class RestAPIClient(APIInterface):
 
     def fetch_from_api(self, url: str = None, method: str = 'GET', **kwargs):
         if method not in self.allowed_methods:
-            raise InvalidMethodError(path, method)
+            raise InvalidMethodError(url, method)
         if not url:
           url = self.url
         response = requests.request(method, url, **kwargs)
